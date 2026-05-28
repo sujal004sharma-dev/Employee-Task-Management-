@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../context/AuthProvider'
+import { setLocalStorage } from '../../utils/localStorage'
 
 const CreateTask = () => {
 
@@ -11,28 +12,39 @@ const CreateTask = () => {
     const [category,setCategory] = useState('')
     const [description,setDescription] = useState('')
 
-    const [newTask,setNewTask] = useState({})
-
     const SubmitHandler = (e) => {
         e.preventDefault();
 
-        // console.log(title , date, assignTo,category,description);
-        setNewTask({ active: false, newTask: true, failed: false, completed: false, title, description, date, category })
+        if (!userData) return
 
-        const data = userData
-        
-        data.forEach(function (elem) {
-            if (assignTo == elem.name) {
-                elem.tasks.push(newTask);
-                console.log(elem);
-                elem.taskNumber.newTask=elem.taskNumber.newTask+1;
-                
+        const task = {
+            activeTask: false,
+            newTask: true,
+            failed: false,
+            completed: false,
+            taskTitle: title,
+            taskDescription: description,
+            taskDate: date,
+            category,
+            priority: 'Normal'
+        }
+
+        const updatedData = userData.map((elem) => {
+            if (assignTo.trim().toLowerCase() === elem.name.trim().toLowerCase()) {
+                return {
+                    ...elem,
+                    tasks: [...elem.tasks, task],
+                    taskNumber: {
+                        ...elem.taskNumber,
+                        newTask: elem.taskNumber.newTask + 1
+                    }
+                }
             }
-            
+            return elem
         })
-        setUserData(data)
-        console.log(data);
 
+        setUserData(updatedData)
+        setLocalStorage(updatedData)
 
         setCategory('')
         setDate('')
