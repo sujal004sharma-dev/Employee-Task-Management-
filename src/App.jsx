@@ -40,7 +40,7 @@ const App = () => {
     const { employee } = getLocalStorage() || {}
 
     if (employee && Array.isArray(employee)) {
-      const found = userData.find((e) => e.email === email && password === e.password)
+      const found = employee.find((e) => e.email === email && password === e.password)
       if (found) {
         setUser('employee')
         setLoggedInUserData(found)
