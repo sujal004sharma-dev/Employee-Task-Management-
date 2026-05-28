@@ -313,9 +313,9 @@ const admin = [
 
 
 
-export const setLocalStorage = () => {
-    localStorage.setItem('employee', JSON.stringify(employee))
-    localStorage.setItem('admin', JSON.stringify(admin))
+export const setLocalStorage = (employeeData = employee, adminData = admin) => {
+    localStorage.setItem('employee', JSON.stringify(employeeData))
+    localStorage.setItem('admin', JSON.stringify(adminData))
     // console.log(admin)
 }
 
